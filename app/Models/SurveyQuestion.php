@@ -10,4 +10,9 @@ class SurveyQuestion extends Model
     use HasFactory;
 
     protected $fillable = ['type', 'question', 'description', 'data', 'survey_id']; 
+
+    // public function Survey()
+    // {
+    //     return $this->belongsTo(Survey::class); 
+    // }
 }

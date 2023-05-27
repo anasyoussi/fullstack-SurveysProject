@@ -1,12 +1,12 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { NavLink, Navigate, Outlet } from 'react-router-dom' 
-import { useSelector } from 'react-redux' 
+import { NavLink, Navigate, Outlet } from 'react-router-dom'  
 import axiosClient from "../axios"; 
 
 import { setCurrentUser, setUserToken } from '../Features/userSlice';
 import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 import {  
   UserIcon, 
@@ -19,10 +19,8 @@ const navigation = [
   { name: 'Dashboard', to: 'dashboard', current: true },
   { name: 'Surveys', to: 'surveys', current: false }, 
 ]
-  
-
-
-const currentUser = {}
+    
+let currentUser = {}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -30,15 +28,12 @@ function classNames(...classes) {
 
 export default function DefaultLayout() {
   
-  const dispatch = useDispatch(); 
-
+  const dispatch = useDispatch();  
 
   const logout = (e) => {
-    e.preventDefault(); 
-  
+    e.preventDefault();  
     axiosClient.post('logout')
-    .then(res => {
-        // console.log(res.data.succes)
+    .then(res => { 
         dispatch(setCurrentUser({}));  
         dispatch(setUserToken(null));  
         localStorage.clear(); 
@@ -49,7 +44,18 @@ export default function DefaultLayout() {
   }
  
   const userToken = useSelector(store => store.user.UserToken); 
-  // console.log(userToken); 
+  const user = useSelector(store => store.user.setCurrentUser);  
+
+  useEffect(() => {
+    axiosClient.get('/me')
+    .then(({data}) => { 
+        dispatch(setCurrentUser(data)); 
+        currentUser = data; 
+    }) 
+    .catch((err) => {
+      return <Navigate to='login' />
+    });
+  }, [])
 
   if(userToken){
     localStorage.setItem('TOKEN', userToken);
@@ -59,8 +65,8 @@ export default function DefaultLayout() {
 
   if(userToken === null){
     return <Navigate to='login' />
-  }
-
+  } 
+  
   return (
     <> 
       <div className="min-h-full">
@@ -118,9 +124,9 @@ export default function DefaultLayout() {
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <Menu.Item>
                               {({ active }) => (
-                                <a href='' className={classNames( active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700' )}>
+                                <Disclosure.Button as='a' onClick={e => logout(e)} href='#' className={classNames( active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700' )}>
                                   Sign out
-                                </a>
+                                </Disclosure.Button>
                               )}
                             </Menu.Item>
                           </Menu.Items>

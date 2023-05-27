@@ -6,12 +6,16 @@ import axiosClient from '../axios';
 import SurveyQuestions from "../Components/SurveyQuestions";
 import QuestionEditor from "../Components/QuestionEditor";
 import moment from "moment/moment"; 
+import { useNavigate  } from 'react-router-dom';
+
 
 
 const SurveyView = () => { 
 
     const [error, setError] = useState({ __html: ''});
-    const [dateError, setDateError] = useState('');   
+    const [dateError, setDateError] = useState(''); 
+    
+    let navigate = useNavigate(); 
  
 
     const [survey, setSurvey] = useState({
@@ -42,8 +46,7 @@ const SurveyView = () => {
     }
 
     const onSubmit = (e) => {
-      e.preventDefault();   
-      console.log(survey)
+      e.preventDefault();    
       const payload = { ...survey }; 
       if(payload.image){
         payload.image = payload.image_url ;
@@ -52,6 +55,7 @@ const SurveyView = () => {
       axiosClient.post('/survey', payload )
       .then(res => {
         console.log(res)
+        navigate('/surveys')
       })
       .catch(err => { 
         if(err.response){
@@ -72,11 +76,11 @@ const SurveyView = () => {
       }
     }
 
-    function onSurveyUpdate(data){  
+    function onQuestionsUpdate(data){  
       setSurvey({ ...survey, questions: data.questions }); 
     }   
 
-    console.log(survey); 
+    // console.log(survey); 
 
   return (
     <PageComponent title="Survey">
@@ -199,7 +203,7 @@ const SurveyView = () => {
               </div> 
               {/*Active*/}
 
-              <SurveyQuestions survey={survey} onSurveyUpdate={onSurveyUpdate} /> 
+              <SurveyQuestions questions={survey} onQuestionsUpdate={onQuestionsUpdate} /> 
                
             </div>
 

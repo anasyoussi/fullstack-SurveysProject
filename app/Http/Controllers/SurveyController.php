@@ -27,9 +27,9 @@ class SurveyController extends Controller
     {
         $user = $request->user(); 
 
-        return SurveyResource::collection( Survey::where('user_id', $user->id)
+        return SurveyResource::collection( Survey::where('user_id', $user->id )
                ->orderBy('created_at', 'desc')
-               ->paginate(10)
+               ->paginate(6)
         ); 
     } 
 
@@ -205,7 +205,8 @@ class SurveyController extends Controller
         } 
         $validator = Validator::make($data, [
             'question'      => 'required|string',
-            'type'          => ['required', Rule::in(['text', 'textarea', 'select', 'radio', 'checkbox'])],
+            // 'type'          => ['required', Rule::in(['text', 'textarea', 'select', 'radio', 'checkbox'])],
+            'type'          => ['required', new Enum(QuestionTypeEnum::class)],
             'description'   => 'nullable|string',
             'data'          => 'present',
             'survey_id'     => 'exists:App\Models\Survey,id',

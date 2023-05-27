@@ -3,20 +3,22 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from 'uuid';
 import QuestionEditor from './QuestionEditor'; 
 
-const SurveyQuestions = ({ survey, onSurveyUpdate }) => {
+const SurveyQuestions = ({ questions, onQuestionsUpdate }) => {
 
-    const [model, setModel] = useState({ ...survey });   
+    // const [model, setModel] = useState({ ...survey });   
+    // He used [] instead on {} in  minute: https://youtu.be/bHRe5XNP5l8?t=18189
+    const [myQuestions, setMyQuestions] = useState({ ...questions });   
  
     useEffect(() => { 
-        onSurveyUpdate(model)  
-    }, [model])  
+        onQuestionsUpdate(myQuestions)  
+    }, [myQuestions])  
 
     const addQuestion = (e) => {    
-        setModel({
-            ...model, 
+        setMyQuestions({
+            ...myQuestions, 
             questions: 
             [
-                ...model.questions, 
+                ...myQuestions.questions, 
                 {
                     id: uuidv4(),
                     type: 'text',
@@ -30,22 +32,22 @@ const SurveyQuestions = ({ survey, onSurveyUpdate }) => {
     
     const questionChange = (question) => { 
         if(!question) return; 
-        const newQuestions = model.questions.map((q) => {
+        const newQuestions = myQuestions.questions.map((q) => {
             if(q.id == question.id){
                 return { ...question }
             }
             return q; 
         });  
-        setModel({
-            ...model, 
+        setMyQuestions({
+            ...myQuestions, 
             questions: newQuestions
         })
     }; 
  
     const deleteQuestion = (question) => {
-        const newQuestions = model.questions.filter((q) => q.id !== question.id); 
-        setModel({
-            ...model, 
+        const newQuestions = myQuestions.questions.filter((q) => q.id !== question.id); 
+        setMyQuestions({
+            ...myQuestions, 
             questions: newQuestions,
         });
     }  
@@ -64,10 +66,10 @@ const SurveyQuestions = ({ survey, onSurveyUpdate }) => {
             </button> 
         </div> 
         {
-            model.questions && model.questions.length 
+            myQuestions.questions && myQuestions.questions.length 
                 ? 
             (
-                model.questions.map((q, ind) => (
+                myQuestions.questions.map((q, ind) => (
                     <QuestionEditor 
                         key={q.id}
                         index={ind}
