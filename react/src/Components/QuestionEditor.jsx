@@ -2,19 +2,27 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { v4 as uuidv4 } from 'uuid';
 
-function QuestionEditor({ index=0, question, questionChange, addQuestion, deleteQuestion }) {
+function QuestionEditor({
+  index = 0,
+  question,
+  addQuestion,
+  deleteQuestion,
+  questionChange,
+}) {
 
   const [model, setModel] = useState({ ...question }); 
-  const questionTypes = useSelector(store => store.survey.QuestionTypes);   
+  const  questionTypes = ['text', 'select', 'radio', 'checkbox', 'textarea'];  
 
   useEffect(() => {
-    questionChange(model)  
+    questionChange(model); 
   }, [model]); 
+ 
 
   function upperCaseFirst(str){
-    return str.charAt(0).toUpperCase() + str.slice(1); 
-  }  
+    return str.charAt().toUpperCase() + str.slice(1); 
+  }   
 
   return (
     <> 

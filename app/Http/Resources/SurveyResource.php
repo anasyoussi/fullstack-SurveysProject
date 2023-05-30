@@ -20,7 +20,8 @@ class SurveyResource extends JsonResource
             'id'            => $this->id ,
             'title'         => $this->title ,
             'image'         => $this->image ? URL::to($this->image) : null,
-            'slug'          => !!$this->slug ,  // !! to convert value to bool
+            'slug'          => $this->slug ,  
+            'status'        => !!$this->status, // !! to convert value to bool
             'description'   => $this->description ,
             'expire_date'   => Carbon::parse($this->expire_date)->format('Y-m-d'),            
             'created_at'    => Carbon::parse($this->created_at->format('Y-m-d H:i:s'))->toDateString(),            
