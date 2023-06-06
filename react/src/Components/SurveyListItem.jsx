@@ -12,10 +12,7 @@ const SurveyListItem = ({ survey, onDeleteClick , uuidv4Key}) => {
         className="w-full h-48 object-cover"
       />
       <h4 className="mt-4 text-lg font-bold">{survey.title}</h4>
-      <div
-        dangerouslySetInnerHTML={{ __html: survey.description }}
-        className="overflow-hidden flex-1"
-      ></div>
+      <div dangerouslySetInnerHTML={{ __html: survey.description }} className="overflow-hidden flex-1"></div>
 
       <div className="flex justify-between items-center mt-3">
         <TButton to={`/surveys/${survey.id}`}>
@@ -23,13 +20,17 @@ const SurveyListItem = ({ survey, onDeleteClick , uuidv4Key}) => {
           Edit
         </TButton>
         <div className="flex items-center">
-          <TButton href={`/view/survey/${survey.slug}`} circle link>
+          <TButton href={`/survey/public/${survey.slug}`} circle link>
             <ArrowTopRightOnSquareIcon className="w-5 h-5" />
           </TButton>
 
-            <TButton onClick={onDeleteClick} circle link color="red">
-              <TrashIcon className="w-5 h-5" />
-            </TButton>
+            {
+              survey.id && (
+                <TButton onClick={e => onDeleteClick(survey.id)} circle link color="red">
+                  <TrashIcon className="w-5 h-5" />
+                </TButton>
+              )
+            }
         
         </div>
       </div>

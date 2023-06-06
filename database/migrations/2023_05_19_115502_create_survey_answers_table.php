@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Survey::class, 'survey_id'); 
             $table->timestamp('start_date'); 
             $table->timestamp('end_date');
+            $table->timestamps(); 
         });
     }
 

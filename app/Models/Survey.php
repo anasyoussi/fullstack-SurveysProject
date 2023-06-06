@@ -11,11 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Survey extends Model
 {
     use HasFactory;
-    use HasSlug;
+    use HasSlug;  
 
-    protected $primaryKey = 'id'; 
-
-    protected $table = 'surveys'; 
+    protected $primaryKey = 'id';  
 
     protected $fillable = ['user_id', 'image', 'title', 'status', 'description', 'expire_date']; 
 
@@ -33,5 +31,10 @@ class Survey extends Model
     public function questions()
     {
         return $this->hasMany(SurveyQuestion::class); 
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(SurveyAnswer::class); 
     }
 }

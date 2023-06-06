@@ -7,13 +7,11 @@ import axiosClient from "../axios";
 import { setCurrentUser, setUserToken } from '../Features/userSlice';
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux';
+import Toast from './Toast';
 
-import {  
-  UserIcon, 
-} from "@heroicons/react/24/outline";
+import { UserIcon } from "@heroicons/react/24/outline"; 
 
-
-
+import { ToastContainer } from 'react-toastify';
 
 const navigation = [
   { name: 'Dashboard', to: 'dashboard', current: true },
@@ -191,9 +189,10 @@ export default function DefaultLayout() {
               </Disclosure.Panel>
             </>
           )}
-        </Disclosure>
-
+        </Disclosure> 
         <Outlet />
+
+        {/* <Toast /> */} 
       </div>
     </>
   )

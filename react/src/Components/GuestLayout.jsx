@@ -4,8 +4,7 @@ import { Navigate, Outlet } from "react-router-dom"
 const GuestLayout = () => {
 
   const userToken = useSelector(store => store.user.UserToken); 
-  const currentUser = useSelector(store => store.user.CurrentUser); 
-  console.log(userToken); 
+  const currentUser = useSelector(store => store.user.CurrentUser);  
 
   if(userToken !== null){
     return <Navigate to='dashboard' />

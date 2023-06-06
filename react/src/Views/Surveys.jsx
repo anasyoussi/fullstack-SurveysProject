@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux"
 import PageComponent from "../Components/PageComponent"
 import SurveyListItem from "../Components/SurveyListItem";
 import { v4 as uuidv4 } from 'uuid';
@@ -6,26 +5,29 @@ import TButton from "../Components/core/TButton";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import axiosClient from "../axios"; 
-// import PaginationLinks from "../Components/PaginationLinks";
-// import { useDispatch } from "react-redux";
-// import { getSurveys, deleteSurvey } from "../Features/surveySlice"; 
+import { useNavigate } from "react-router-dom";
+// import PaginationLinks from "../Components/PaginationLinks"; 
+import { toast } from 'react-toastify';
 
 import { lazy, Suspense } from 'react'
 
 const Surveys = () => { 
 
-  // const surveys  = useSelector(store => store.survey.Surveys);   
-  // const dispatch = useDispatch(); 
+  let navigate = useNavigate(); 
 
+  // const surveys  = useSelector(store => store.survey.Surveys);   
+       
   const [surveys, setSurveys] = useState([]); 
   const [meta, setMeta] = useState({}); 
   const [loading, setLoading]  = useState(false); 
+
+
   // use lazy loading to solve problem of undifined meta.links error: 
   const Paginate = lazy(() => import('../Components/PaginationLinks'));
   
   const onPageClick = (link) => {
     let { url } = link; 
-    console.log(url)
+    // console.log(url)
     getSurveys(url); 
   }
 
@@ -44,11 +46,20 @@ const Surveys = () => {
     getSurveys(); 
   }, []);  
  
+  const notify = (message) => toast(message);
 
-  const onDeleteClick = () => {
-    console.log("On delete Click"); 
+  const onDeleteClick = (id) => {
+    console.log(id); 
+    if(window.confirm('Are u sure ?')){
+      axiosClient.delete(`/survey/${id}`)
+      .then(() => {
+        getSurveys();   
+        notify("Deleted Successfully !"); 
+      });  
+    }  
   } 
-   
+  
+
   return (
     <PageComponent title="Surveys"
         buttons={(
@@ -67,7 +78,7 @@ const Surveys = () => {
         <div id={uuidv4()} className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
           {
             surveys && surveys.map(survey => (
-              <SurveyListItem survey={survey} uuidv4Key={uuidv4()} onDeleteClick={() => onDeleteClick()}/>
+              <SurveyListItem survey={survey} uuidv4Key={uuidv4()} onDeleteClick={onDeleteClick}/>
             ))
           }
         </div>

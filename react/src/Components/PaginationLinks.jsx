@@ -27,20 +27,22 @@ export default function PaginationLinks({ meta, onPageClick }) {
         </div>
       </div>
       {
-          meta.links.map((link, ind) => (
-            <button 
-              onClick={e => onClick(e, link)} 
-              className={
-                 "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 hover:bg-gray-50 "
-                + (ind === 0 ? 'rounded-l-md ' : '')
-                + (ind === meta.links.length - 1 ? 'rounded-r-md ' : '')
-                + (link.active ? 'border-indigo-500 bg-indigo-50 text-indigo-600 ' : '')
-              }
-              dangerouslySetInnerHTML={{ __html: link.label }}
-            > 
-            </button>
-          ))
-        } 
+          meta.total >= 10 && (
+            meta.links.map((link, ind) => (
+              <button 
+                onClick={e => onClick(e, link)} 
+                className={
+                   "relative z-10 inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20 hover:bg-gray-50 "
+                  + (ind === 0 ? 'rounded-l-md ' : '')
+                  + (ind === meta.links.length - 1 ? 'rounded-r-md ' : '')
+                  + (link.active ? 'border-indigo-500 bg-indigo-50 text-indigo-600 ' : '')
+                }
+                dangerouslySetInnerHTML={{ __html: link.label }}
+              > 
+              </button>
+            ))
+          )  
+      } 
     </div>
   );
 }

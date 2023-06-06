@@ -9,10 +9,14 @@ class SurveyQuestion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'question', 'description', 'data', 'survey_id']; 
+    protected $primaryKey = 'id'; 
 
-    // public function Survey()
-    // {
-    //     return $this->belongsTo(Survey::class); 
-    // }
+    protected $foreignKey = 'survey_id'; 
+
+    protected $fillable = ['id', 'type', 'question', 'description', 'data', 'survey_id']; 
+
+    public function Survey()
+    {
+        return $this->belongsTo(Survey::class); 
+    }
 }
