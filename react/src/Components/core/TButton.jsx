@@ -68,8 +68,9 @@ export default function TButton({color = "indigo",  to = "",  circle = false,  h
 
   return (
     <>
-      {href && (
-        <a href={href} className={classes.join(" ")} target={target}>
+      {href && (               
+                                      // target={target}
+        <a href={href} className={classes.join(" ")} >
           {children}
         </a>
       )}
